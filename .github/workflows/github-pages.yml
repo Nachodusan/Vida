@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:
@@ -13,6 +13,11 @@ permissions:
 concurrency:
   group: "pages"
   cancel-in-progress: true
+
+env:
+  # 👇 Ajusta si cambias el nombre del repo
+  NEXT_PUBLIC_BASEPATH: /Vida
+  GITHUB_PAGES: "true"
 
 jobs:
   build:
@@ -30,13 +35,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "pnpm"
+          cache: pnpm
 
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
-      - name: Build & export static site
+      - name: Build (Next output: export)
         run: pnpm run build
+
+      # Asegura que el artefacto incluya .nojekyll para permitir /_next/*
+      - name: Ensure .nojekyll in out
+        run: |
+          mkdir -p out
+          touch out/.nojekyll
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
