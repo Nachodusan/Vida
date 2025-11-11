@@ -7,12 +7,15 @@
   },
   "scripts": {
     "clean": "node -e \"const fs=require('fs');for(const d of ['out','.next']){try{fs.rmSync(d,{recursive:true,force:true});}catch(e){}}\"",
-    "prebuild": "pnpm run clean",
-    "build": "next build && next export",
+    "prebuild": "npm run clean",
+    "build": "next build",
     "dev": "next dev",
     "start": "next start",
     "lint": "eslint . || true",
-    "export": "echo \"Static export is handled by 'output: export' in next.config.mjs\""
+    "//": "Build para GitHub Pages (elige el que corresponda a tu SO)",
+    "build:ghpages:win": "set GITHUB_PAGES=true && set NEXT_PUBLIC_BASEPATH=/VidaNL && next build",
+    "build:ghpages:nix": "GITHUB_PAGES=true NEXT_PUBLIC_BASEPATH=/VidaNL next build",
+    "export": "echo \"Static export ahora lo hace 'output: export' en next.config.mjs\""
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
